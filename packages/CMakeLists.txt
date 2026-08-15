@@ -3,6 +3,7 @@ include(${PROJECT_SOURCE_DIR}/cmake/packages_check.cmake)
 list(APPEND ep
     # depth 0
     amf-headers
+    angle-headers
     brotli
     bzip2
     c-ares

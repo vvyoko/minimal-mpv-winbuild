@@ -19,7 +19,6 @@ Autobuild runs daily at UTC 00:00.
 - **Font** — fontconfig
 - **Disc playback** — libdvdcss, libdvdread, libdvdnav
 - **Network** — libssh, libsrt, megasdk (with cryptopp, libsodium, libuv, sqlite, readline, termcap)
-- **Graphics** — ANGLE headers
 - **Hardware acceleration** — libmfx, libva
 - **Scripting** — mujs
 - **Input** — libsdl2
