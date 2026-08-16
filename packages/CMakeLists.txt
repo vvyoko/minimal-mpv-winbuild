@@ -16,6 +16,7 @@ list(APPEND ep
     highway
     libiconv
     libjpeg
+    mujs
     libpsl
     libsoxr
     libudfread

@@ -20,7 +20,6 @@ Autobuild runs daily at UTC 00:00.
 - **Disc playback** — libdvdcss, libdvdread, libdvdnav
 - **Network** — libssh, libsrt, megasdk (with cryptopp, libsodium, libuv, sqlite, readline, termcap)
 - **Hardware acceleration** — libmfx, libva
-- **Scripting** — mujs
 - **Input** — libsdl2
 - **Compression** — lzo
 - **Misc** — libsixel
@@ -142,6 +141,7 @@ After that, build mpv as usual:
     - libxml2
     - libzimg (with graphengine)
     - luajit
+    - mujs
     - mpv
     - nvcodec-headers
     - openssl

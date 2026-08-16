@@ -17,6 +17,7 @@ ExternalProject_Add(mpv
         spirv-cross
         subrandr
         uchardet
+        mujs
         vulkan
     GIT_REPOSITORY https://github.com/mpv-player/mpv.git
     SOURCE_DIR ${SOURCE_LOCATION}
@@ -46,14 +47,14 @@ ExternalProject_Add(mpv
         -Dd3d-hwaccel=enabled
         -Dd3d11=enabled
         -Dd3d9-hwaccel=disabled
-        -Ddirect3d=disabled
+        -Ddirect3d=enabled
         -Ddvbin=disabled
         -Ddvdnav=disabled
         -Dfuzzers=false
         -Dgl=disabled
         -Dhtml-build=disabled
         -Diconv=enabled
-        -Djavascript=disabled
+        -Djavascript=enabled
         -Djpeg=enabled
         -Dlcms2=enabled
         -Dlibarchive=enabled
