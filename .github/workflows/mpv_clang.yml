@@ -247,7 +247,7 @@ jobs:
           name=$(date "+%Y-%m-%d %H:%M")
           body=$(cat <<END
           **LLVM/Clang**: ${{ needs.build_mpv.outputs.clang_version }}
-          **mpv**: [${{ needs.build_mpv.outputs.mpv_shorthead }}](https://github.com/mpv-player/mpv/commit/${{ needs.build_mpv.outputs.mpv_shorthead }})
+          **mpv**: [${{ needs.build_mpv.outputs.mpv_shorthead }}](https://github.com/vloli/mpv/commit/${{ needs.build_mpv.outputs.mpv_shorthead }})
           **FFmpeg**: [${{ needs.build_mpv.outputs.ffmpeg_shorthead }}](https://github.com/FFmpeg/FFmpeg/commit/${{ needs.build_mpv.outputs.ffmpeg_shorthead }})
           **libplacebo**: [${{ needs.build_mpv.outputs.libplacebo_shorthead }}](https://github.com/haasn/libplacebo/commit/${{ needs.build_mpv.outputs.libplacebo_shorthead }})
           **Workflow**: [$GITHUB_RUN_ID]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)

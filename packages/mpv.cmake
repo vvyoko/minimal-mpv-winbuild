@@ -19,16 +19,11 @@ ExternalProject_Add(mpv
         uchardet
         mujs
         vulkan
-    GIT_REPOSITORY https://github.com/mpv-player/mpv.git
+    GIT_REPOSITORY https://github.com/vloli/mpv.git
     SOURCE_DIR ${SOURCE_LOCATION}
     GIT_CLONE_FLAGS "--sparse --filter=tree:0"
     GIT_CLONE_POST_COMMAND "sparse-checkout set --no-cone /* !/fuzzers !/test"
     UPDATE_COMMAND ""
-    # Replace input/event.c with a build that forwards dropped files to clients
-    # via the "mpv_internal_drop_files_forward" script-message (see mpv-event-drop-forward.c).
-    # The hijack sits in mp_event_drop_mime_data, which already has mp_input_run_cmd
-    # in context, so no extra references are needed.
-    PATCH_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/mpv-event-drop-forward.c <SOURCE_DIR>/input/event.c
     CONFIGURE_COMMAND ${EXEC} CONF=1 meson setup <BINARY_DIR> <SOURCE_DIR>
         --prefix=${MINGW_INSTALL_PREFIX}
         --libdir=${MINGW_INSTALL_PREFIX}/lib
