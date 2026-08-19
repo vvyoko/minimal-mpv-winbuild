@@ -11,6 +11,11 @@ on:
         required: false
         default: true
         type: boolean
+      disable_repo_cache:
+        description: 'Disable repository cache (fetch fresh source, force-update all packages)'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -86,6 +91,7 @@ jobs:
           echo "value=${MATCHED_KEY#clang_root-}" >> $GITHUB_OUTPUT
 
       - name: Loading repository cache
+        if: ${{ github.event.inputs.disable_repo_cache != 'true' }}
         uses: actions/cache/restore@main
         with:
           path: src_packages
@@ -102,12 +108,31 @@ jobs:
 
       - name: Configuring CMake & Downloading source
         run: |
+          if [[ "${{ github.event.inputs.disable_repo_cache }}" == "true" ]]; then
+            echo "Clean start for sources..."
+            # 彻底删除源码目录，确保没有旧的 .git 锁文件残留
+            rm -rf src_packages
+            # 强迫 CMake 重新扫描环境（保留 BUILD_DIR，避免 LLVM 白编）
+            rm -f $BUILD_DIR/CMakeCache.txt
+          fi
           cmake -DTARGET_ARCH=$BIT-w64-mingw32 -DCOMPILER_TOOLCHAIN=clang -DLLVM_ARCH=${{ matrix.llvm_arch }} -DCMAKE_INSTALL_PREFIX=$PWD/clang_root -DMINGW_INSTALL_PREFIX=$PWD/$BUILD_DIR/$BIT-${{ env.SYSROOT_LEVEL }}-w64-mingw32 -DSINGLE_SOURCE_LOCATION=$PWD/src_packages -DRUSTUP_LOCATION=$PWD/clang_root/install_rustup -DENABLE_CCACHE=ON -DCLANG_PACKAGES_LTO=ON -DCLANG_FLAGS="${{ matrix.clang_flags }}" -G Ninja --fresh -B $BUILD_DIR -S $PWD
           ninja -C $BUILD_DIR download || true
 
       - name: Building mpv
         run: |
-          ninja -C $BUILD_DIR update
+          # 无论是否禁用缓存，先强制清理可能残留的全局 Git 锁（这是解决构建报错的关键）
+          find .git/ -name "*.lock" -delete || true
+          if [[ "${{ github.event.inputs.disable_repo_cache }}" == "true" ]]; then
+            echo "检测到禁用仓库缓存，正在以串行模式强制更新所有源码..."
+            targets=$(ninja -C $BUILD_DIR -t targets | grep "force-update" | cut -d: -f1)
+            for t in $targets; do
+              echo "Processing $t..."
+              ninja -C $BUILD_DIR $t -j 1
+            done
+          else
+            echo "使用现有缓存，正常更新..."
+            ninja -C $BUILD_DIR update
+          fi
           ninja -C $BUILD_DIR mpv
 
       - name: Packaging mpv

@@ -11,6 +11,11 @@ on:
         required: false
         default: true
         type: boolean
+      disable_repo_cache:
+        description: 'Forward to mpv_clang: disable repository cache (fresh source)'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -194,7 +199,8 @@ jobs:
           {
             "ref": "master",
             "inputs": {
-              "github_release": "true"
+              "github_release": "true",
+              "disable_repo_cache": "${{ github.event.inputs.disable_repo_cache }}"
             }
           }
           EOF

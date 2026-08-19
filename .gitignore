@@ -5,3 +5,5 @@
 /src_packages
 /llvm.profdata
 .workbuddy
+/mpv
+/log
